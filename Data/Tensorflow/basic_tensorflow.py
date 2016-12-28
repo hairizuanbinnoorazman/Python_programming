@@ -18,6 +18,7 @@ tf.matmul (Matrix Multiplication)
 # Matrix Stuff
 tf.zeros
 tf.truncated_normal
+tf.reduce_sum -> This is basically collapsing a array of numbers into a single number
 
 # Neural Network related Stuff
 tf.nn.softmax - Use to classify datasets
@@ -102,6 +103,18 @@ Consists of 3 steps
 1. Producing logits via Logistic Regression
 2. Logits (Probabilities) are further tuned to their respective classifications with softmax
 3. Value after softmax is compared via cross-entropy function to one hot encoding (Belong to one class, the rest are zero)
+
+We can then use cross entropy to calculate the loss which we can then use to optimize.
+However, calculating the loss is too costly on compute and data access.
+(Essentially, you are calculating the direction on where to go with the dataset by calculating it across the ten of thousands of rows of data)
+
+Important things to note - to make optimizer's life easier, need to try to go for the mean and variance of the dataset
+input - mean and variance of dataset (Normalize dataset)
+weights - random, centered around mean and have a small variance
+
+How, there is method to calculate this via SGD (Stochastic Gradient Descent - do gradient descent on a sample of the dataset)
+When doing the learning, we can utilize the momentum of the gradient descent (running average) to reduce noise of the gradient descent
+and reduce learning rate as we get closer and closer to the "answer"
 '''
 
 ############################################################

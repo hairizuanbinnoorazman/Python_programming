@@ -5,8 +5,11 @@ pip install tensorflow **(Don't use the tensorflow-gpu; it causes problems)**
 List of functions in tensorflow to know
 tf.constant
 tf.Variable
+tf.placeholder
 tf.Session()
-tf.initialize_all_variables()
+tf.initialize_all_variables() # Depreciated by 2017
+tf.train.Saver() as saver; saver.save(); saver.restore(tf.Session(), <save file>)
+tf.reset_default_graph() # Resets bias and weights
 
 # Math
 tf.add
@@ -18,10 +21,12 @@ tf.matmul (Matrix Multiplication)
 # Matrix Stuff
 tf.zeros
 tf.truncated_normal
-tf.reduce_sum -> This is basically collapsing a array of numbers into a single number
+tf.reduce_sum -> This is basically collapsing a array of numbers into a single number via its sum
+tf.reduce_mean -> This is basically collapsing an array of numbers into a single number via its mean
 
 # Neural Network related Stuff
 tf.nn.softmax - Use to classify datasets
+tf.train.GradientDescentOptimizer - Using Gradient Descent as numerical
 '''
 
 import tensorflow as tf
@@ -100,7 +105,7 @@ def run():
 
 '''
 Consists of 3 steps
-1. Producing logits via Logistic Regression
+1. Producing logits via Logistic Regression (Matrix Multiplication of weights and input and add bias unit)
 2. Logits (Probabilities) are further tuned to their respective classifications with softmax
 3. Value after softmax is compared via cross-entropy function to one hot encoding (Belong to one class, the rest are zero)
 

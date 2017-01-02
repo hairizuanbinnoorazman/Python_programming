@@ -32,6 +32,7 @@ Each convolution is a convolution step, activation and pooling
 Each fully connected network is a linear regression step followed by activation
 
 Additional notes when implementing CNNs as tensorflow is below:
+Note: This is not the full tensorflow model implementation
 """
 
 import tensorflow as tf

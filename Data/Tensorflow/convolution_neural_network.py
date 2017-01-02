@@ -35,6 +35,7 @@ Additional notes when implementing CNNs as tensorflow is below:
 """
 
 import tensorflow as tf
+from tensorflow.contrib.layers import flatten
 
 def LeNet(x):
     # Hyperparameters

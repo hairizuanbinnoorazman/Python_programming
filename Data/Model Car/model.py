@@ -25,6 +25,16 @@ image2 = mpimg.imread(image2_name)
 image3 = mpimg.imread(image3_name)
 images = np.array([image1, image2, image3])
 
+# Settings
+csv_path = "driving_log.csv"
+use_center_images_only = True
+steering_angle = 0.5
+
+# Hyper parameters
+adam_learning_rate = 0.00001
+samples_per_epoch = 3000
+epoch_no = 3
+
 # Generator function
 def generate_image(csv_path, steering_adj = 0.5, center_images_only = True):
     # Get the file size
@@ -78,8 +88,6 @@ def generate_image(csv_path, steering_adj = 0.5, center_images_only = True):
 # Getting image shape
 image_shape = image1.shape
 
-steering_angle = np.array([0.0, 0.0, 0.0])
-
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
@@ -103,9 +111,9 @@ model.add(Dense(50, activation='relu'))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(1, activation='tanh'))
 
-adam = Adam(lr=0.00001)
+adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])
-history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=3000, nb_epoch=3)
+history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
 
 # model.json is the file that contains the model specifications
 json_string = model.to_json()

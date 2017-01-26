@@ -5,11 +5,13 @@
 - In order to prevent scenarios of garbage in garbage out, we would collect the data in batches. E.g. Record before
  starting the curve and right after the curve, stop the recording. At this point, we would save the batched data in
  another folder and prepare for the next batch of data.
-- To further generalize the
-
-- Training data has been chosen to induce the desired behavior in the simulation (i.e. keeping the car on the track).
-- How the model was trained and what the characteristics of the dataset are. Information such as how the dataset was
-generated and examples of images from the dataset should be included.
+- As mentioned within the NVIDIA paper that was mentioned within the lesson, we could utilize the left and right camera
+images and treat them as though the car was positioned slightly left and slightly right. We would use a slight turn angle
+several blogposts and discussions mentioned a slight angle of 0.25 to the steering wheel but this was tested on the
+model. If we drove around at the center of the road and collected 10,000 images, we would have collected '30000' images that
+can be used for training.
+- In order to understand the dataset further, after the initial processing of utilizing both the left and right hand camera images,
+we would vizualize the distribution of steering angles to see where it is most concentrated at. This is done via graphs
 
 ### What kind of model infrastruture is implemented here?
 
@@ -22,8 +24,13 @@ the number of layers, the size of each layer. Visualizations emphasizing particu
 
 ### Measures taken to reduce overfitting the model
 
+- One of the ways to reduce overfitting of the model is the dropout layers within the first 2 layers of the model. The dropout
+model will drop 50% of the connections randomly which would mean only stronger signals would be used to predict the steering
+wheel angle
+- To reduce overfitting further, we would do extra adjustments to the images such as changing the increasing and reducing
+the brightness of the images
 - Train/validation/test splits have been used, and the
-- Model uses dropout layers or other methods to reduce overfitting.
+
 
 ### Hyperparemeter selection
 

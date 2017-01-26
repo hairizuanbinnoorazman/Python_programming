@@ -25,7 +25,7 @@ image3 = mpimg.imread(image3_name)
 images = np.array([image1, image2, image3])
 
 # Generator function
-def generate_image(csv_path, steering_adj = 0.15):
+def generate_image(csv_path, steering_adj = 0.15, center_images_only = True):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()
@@ -48,7 +48,7 @@ def generate_image(csv_path, steering_adj = 0.15):
             # Image, we would be doing a probability
             # We wouldn't want to use too much front driving - more concerned on curves
             # Mainly use the centre images - 50% chance
-            if random() > 0.5:
+            if random() > 0.5 or center_images_only:
                 image = mpimg.imread(str.strip(data[1]))
                 print "Using " + data[1] + " steering_angle: " + str(steering_angle)
             elif random() > 0.5:

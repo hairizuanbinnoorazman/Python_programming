@@ -104,7 +104,7 @@ model.add(Dense(1, activation='tanh'))
 
 model.compile('adam', "mse", ['accuracy'])
 #history = model.fit(images, steering_angle, nb_epoch=3)
-history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=100, nb_epoch=4)
+history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=1000, nb_epoch=4)
 
 # model.json is the file that contains the model specifications
 json_string = model.to_json()

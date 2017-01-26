@@ -4,6 +4,7 @@
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
+from keras.optimizers import Adam
 
 # Import Numpy
 import numpy as np
@@ -25,7 +26,7 @@ image3 = mpimg.imread(image3_name)
 images = np.array([image1, image2, image3])
 
 # Generator function
-def generate_image(csv_path, steering_adj = 0.25, center_images_only = False):
+def generate_image(csv_path, steering_adj = 0.5, center_images_only = True):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()
@@ -93,18 +94,18 @@ model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
-model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
+model.add(Convolution2D(128, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
 model.add(Flatten())
 model.add(Dense(100, activation='relu'))
 model.add(Dense(50, activation='relu'))
-model.add(Dense(10, activation='relu'))
+model.add(Dense(10, activation='tanh'))
 model.add(Dense(1, activation='tanh'))
 
-model.compile('adam', "mse", ['accuracy'])
-#history = model.fit(images, steering_angle, nb_epoch=3)
-history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=500, nb_epoch=4)
+adam = Adam(lr=0.00001)
+model.compile(adam, "mse", ['accuracy'])
+history = model.fit_generator(generate_image("driving_log.csv"), samples_per_epoch=3000, nb_epoch=3)
 
 # model.json is the file that contains the model specifications
 json_string = model.to_json()

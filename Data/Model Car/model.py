@@ -25,7 +25,7 @@ image3 = mpimg.imread(image3_name)
 images = np.array([image1, image2, image3])
 
 # Generator function
-def generate_image(csv_path, steering_adj = 0.15, center_images_only = True):
+def generate_image(csv_path, steering_adj = 0.25, center_images_only = False):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()

@@ -32,8 +32,21 @@ steering_angle = 0.5
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 3000
-epoch_no = 3
+samples_per_epoch = 300
+epoch_no = 2
+
+# Min-Max Scaling
+def normalize(image_data):
+    """
+    Normalize the image data with Min-Max scaling to a range of [0.1, 0.9]
+    :param image_data: The image data to be normalized
+    :return: Normalized image data
+    """
+    a = 0.1
+    b = 0.9
+    min = 0
+    max = 255
+    return a + ( ( (image_data - min)*(b - a) )/( max - min ) )
 
 # Generator function
 def generate_image(csv_path, steering_adj = 0.5, center_images_only = True):
@@ -59,25 +72,42 @@ def generate_image(csv_path, steering_adj = 0.5, center_images_only = True):
             # Image, we would be doing a probability
             # We wouldn't want to use too much front driving - more concerned on curves
             # Mainly use the centre images - 50% chance
-            if random() > 0.5 or center_images_only:
-                image = mpimg.imread(str.strip(data[1]))
-                print "Using " + data[1] + " steering_angle: " + str(steering_angle)
-            elif random() > 0.5:
-                # Reads the right camera
-                image = mpimg.imread(str.strip(data[2]))
-                steering_angle = min(1.0, steering_angle - steering_adj)
-                print "Using " + data[1] + " steering_angle: " + str(steering_angle)
-            else:
-                # Reads the right camera
-                image = mpimg.imread(str.strip(data[0]))
-                steering_angle = min(1.0, steering_angle + steering_adj)
-                print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+            # if random() > 0.5 or center_images_only:
+            #     image = mpimg.imread(str.strip(data[1]))
+            #     print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+            # elif random() > 0.5:
+            #     # Reads the right camera
+            #     image = mpimg.imread(str.strip(data[2]))
+            #     steering_angle = min(1.0, steering_angle - steering_adj)
+            #     print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+            # else:
+            #     # Reads the right camera
+            #     image = mpimg.imread(str.strip(data[0]))
+            #     steering_angle = min(1.0, steering_angle + steering_adj)
+            #     print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+
+            # Use all left, center and right images for training
+            image_left = mpimg.imread(str.strip(data[0]))
+            image_center = mpimg.imread(str.strip(data[1]))
+            image_right = mpimg.imread(str.strip(data[2]))
+
+            steering_angle_left = min(1.0, steering_angle + steering_adj)
+            steering_angle_center = steering_angle
+            steering_angle_right = min(1.0, steering_angle - steering_adj)
+
 
             # Further image manipulations here
+
+            # Image normalization
+            image_left = normalize(image_left)
+            image_center = normalize(image_center)
+            image_right = normalize(image_right)
+
             # TODO: Move image up or down to simulate slope
             # TODO: Darken or lighten the image
             # TODO: Cast shadow on image
-            yield np.array([image]), np.array([steering_angle])
+            yield np.array([image_left, image_center, image_right]), \
+                  np.array([steering_angle_left, steering_angle_center, steering_angle_right])
 
         except Exception as e:
             print str(e)

@@ -27,12 +27,12 @@ images = np.array([image1, image2, image3])
 
 # Settings
 csv_path = "driving_log.csv"
-use_center_images_only = True
-steering_angle = 0.5
+use_center_images_only = False
+steering_angle = 0.25
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 300
+samples_per_epoch = 100
 epoch_no = 2
 
 # Min-Max Scaling

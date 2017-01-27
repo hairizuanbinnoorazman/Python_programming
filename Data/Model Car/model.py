@@ -112,7 +112,7 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
             yield np.array([image]), np.array([steering_angle])
 
         except Exception as e:
-            print str(e)
+            print(str(e))
 
     f.close()
 
@@ -147,7 +147,7 @@ adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])
 history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle,
                                              center_images_only=use_center_images_only,
-                                             image_path="./IMG"),
+                                             image_path="./session_data/IMG"),
                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
 
 # model.json is the file that contains the model specifications

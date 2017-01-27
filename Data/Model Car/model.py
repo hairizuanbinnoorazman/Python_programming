@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
 from keras.optimizers import Adam
+from keras.layers import ELU
 
 # Import Numpy
 import numpy as np
@@ -123,25 +124,29 @@ image_shape = image1.shape
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
-model.add(Activation('relu'))
+model.add(Activation('ELU'))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Convolution2D(48, 5, 5, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Flatten())
-model.add(Dense(100, activation='relu'))
-model.add(Dense(50, activation='relu'))
-model.add(Dense(10, activation='tanh'))
-model.add(Dense(1, activation='tanh'))
+model.add(Dense(100))
+model.add(ELU())
+model.add(Dense(50))
+model.add(ELU())
+model.add(Dense(10))
+model.add(ELU())
+model.add(Dense(1))
+model.add(ELU())
 
 adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])

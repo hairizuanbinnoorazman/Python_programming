@@ -131,11 +131,9 @@ model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))

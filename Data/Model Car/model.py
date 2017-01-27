@@ -10,6 +10,7 @@ from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
 from keras.optimizers import Adam
 from keras.layers import ELU
+from keras.layers.normalization import BatchNormalization
 
 # Import Numpy
 import numpy as np
@@ -141,12 +142,15 @@ model.add(ELU())
 model.add(Flatten())
 model.add(Dense(100))
 model.add(ELU())
+model.add(BatchNormalization(epsilon=0.001, mode=0))
 # model.add(Activation('tanh'))
 model.add(Dense(50))
 model.add(ELU())
+model.add(BatchNormalization(epsilon=0.001, mode=0))
 # model.add(Activation('tanh'))
 model.add(Dense(10))
 model.add(ELU())
+model.add(BatchNormalization(epsilon=0.001, mode=0))
 # model.add(Activation('tanh'))
 model.add(Dense(1))
 

@@ -8,8 +8,8 @@
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
-from keras.layers import MaxPooling2D
 from keras.optimizers import Adam
+from keras.regularizers import l2
 from keras.layers import ELU
 
 # Import Numpy
@@ -142,13 +142,13 @@ model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
 model.add(Flatten())
-model.add(Dense(100))
+model.add(Dense(100, W_regularizer=l2(0.01)))
 model.add(ELU())
 # model.add(Activation('tanh'))
-model.add(Dense(50))
+model.add(Dense(50, W_regularizer=l2(0.01)))
 model.add(ELU())
 # model.add(Activation('tanh'))
-model.add(Dense(10))
+model.add(Dense(10, W_regularizer=l2(0.01)))
 # model.add(ELU())
 model.add(Activation('tanh'))
 model.add(Dense(1))

@@ -137,7 +137,7 @@ model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
 model.add(ELU())
 model.add(MaxPooling2D(pool_size=(2,2)))
 
-model.add(Convolution2D(48, 5, 5, subsample=(2,2)))
+model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
 model.add(ELU())
 model.add(MaxPooling2D(pool_size=(2,2)))
 

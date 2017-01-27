@@ -130,18 +130,18 @@ image_shape = image1.shape
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
-model.add(ELU())
+model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
-model.add(ELU())
+model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
-model.add(ELU())
+model.add(Activation('relu'))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(ELU())
+model.add(Activation('relu'))
 
 model.add(Flatten())
 model.add(Dense(100))
@@ -151,8 +151,8 @@ model.add(Dense(50))
 model.add(ELU())
 # model.add(Activation('tanh'))
 model.add(Dense(10))
-model.add(ELU())
-# model.add(Activation('tanh'))
+# model.add(ELU())
+model.add(Activation('tanh'))
 model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)

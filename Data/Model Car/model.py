@@ -146,7 +146,6 @@ model.add(ELU())
 model.add(Dense(10))
 model.add(ELU())
 model.add(Dense(1))
-model.add(ELU())
 
 adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])

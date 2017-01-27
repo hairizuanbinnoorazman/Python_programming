@@ -89,7 +89,7 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
             # We wouldn't want to use too much front driving - more concerned on curves
             # Mainly use the centre images - 50% chance
             if random() > 0.5 or center_images_only:
-                image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
+                image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
             elif random() > 0.5:
                 # Reads the right camera
@@ -97,8 +97,8 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
                 steering_angle = min(1.0, steering_angle - steering_adj)
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
             else:
-                # Reads the right camera
-                image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
+                # Reads the left camera
+                image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
                 steering_angle = min(1.0, steering_angle + steering_adj)
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
 

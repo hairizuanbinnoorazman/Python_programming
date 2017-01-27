@@ -22,6 +22,8 @@ we would vizualize the distribution of steering angles to see where it is most c
 the number of layers, the size of each layer. Visualizations emphasizing particular qualities of the architecture are encouraged.
 - Discusses the approach taken for deriving and designing a model architecture fit for solving the given problem.
 
+- Initial design uses Relu which causes the vehicle to zigzag like crazy
+
 ### Measures taken to reduce overfitting the model
 
 - One of the ways to reduce overfitting of the model is the dropout layers within the first 2 layers of the model. The dropout

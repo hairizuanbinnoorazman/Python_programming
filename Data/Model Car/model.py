@@ -8,6 +8,7 @@
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
+from keras.layers import MaxPooling2D
 from keras.optimizers import Adam
 from keras.layers import ELU
 
@@ -130,18 +131,19 @@ model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
 model.add(ELU())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
 model.add(ELU())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(48, 5, 5, subsample=(2,2)))
 model.add(ELU())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(ELU())
-
-model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(ELU())
+model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Flatten())
 model.add(Dense(100))

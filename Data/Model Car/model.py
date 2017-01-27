@@ -41,7 +41,7 @@ steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 20000
+samples_per_epoch = 10000
 epoch_no = 1
 
 # Modify image path
@@ -142,13 +142,13 @@ model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
 model.add(Flatten())
-model.add(Dense(100, W_regularizer=l2(0.01)))
+model.add(Dense(100))
 model.add(ELU())
 # model.add(Activation('tanh'))
-model.add(Dense(50, W_regularizer=l2(0.01)))
+model.add(Dense(50))
 model.add(ELU())
 # model.add(Activation('tanh'))
-model.add(Dense(10, W_regularizer=l2(0.01)))
+model.add(Dense(10))
 # model.add(ELU())
 model.add(Activation('tanh'))
 model.add(Dense(1))

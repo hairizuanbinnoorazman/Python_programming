@@ -1,5 +1,9 @@
 # This file is used to generate model.json and model.h5
 
+# TODO: Car keeps turning left - Need to find out the distribution of left vs right vs straight of 0 degrees
+# TODO: Car cannot recover if moved too far to the left or right - need more samples
+# TODO: Be able to manipulate the script and get the filename and not file path - Allow possibility to train on amazon gpu
+
 # Import the Keras library
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
@@ -15,6 +19,8 @@ import matplotlib.image as mpimg
 # Import random to determine a random line of record to read
 from random import randint
 from random import random
+
+import os
 
 # Testing purposes
 image1_name = 'image1.jpg'
@@ -35,6 +41,15 @@ adam_learning_rate = 0.00001
 samples_per_epoch = 200
 epoch_no = 2
 
+# Modify image path
+# Image path is with respect to full file path
+# Use ./IMG
+def modify_image_path(recorded_path, image_path):
+    if image_path is None:
+        return recorded_path
+    else:
+        return str(image_path) + "/" + str(os.path.split(recorded_path)[1])
+
 # Min-Max Scaling
 def normalize(image_data):
     """
@@ -49,7 +64,7 @@ def normalize(image_data):
     return a + ( ( (image_data - min)*(b - a) )/( max - min ) )
 
 # Generator function
-def generate_image(csv_path, steering_adj, center_images_only):
+def generate_image(csv_path, steering_adj, center_images_only, image_path = None):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()
@@ -73,16 +88,16 @@ def generate_image(csv_path, steering_adj, center_images_only):
             # We wouldn't want to use too much front driving - more concerned on curves
             # Mainly use the centre images - 50% chance
             if random() > 0.5 or center_images_only:
-                image = mpimg.imread(str.strip(data[1]))
+                image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
             elif random() > 0.5:
                 # Reads the right camera
-                image = mpimg.imread(str.strip(data[2]))
+                image = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
                 steering_angle = min(1.0, steering_angle - steering_adj)
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
             else:
                 # Reads the right camera
-                image = mpimg.imread(str.strip(data[0]))
+                image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
                 steering_angle = min(1.0, steering_angle + steering_adj)
                 # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
 
@@ -119,7 +134,7 @@ model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
-model.add(Convolution2D(128, 3, 3, subsample=(2,2)))
+model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
 model.add(Flatten())

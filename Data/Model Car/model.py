@@ -10,10 +10,10 @@ from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
 from keras.optimizers import Adam
 from keras.layers import ELU
-from keras.layers.normalization import BatchNormalization
 
 # Import Numpy
 import numpy as np
+import cv2
 
 # Import image reading capability
 import matplotlib.image as mpimg
@@ -111,6 +111,10 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
             # TODO: Move image up or down to simulate slope
             # TODO: Darken or lighten the image
             # TODO: Cast shadow on image
+
+            # Image resizing
+            cv2.resize(image, (image.shape[0], image.shape[0]))
+
             yield np.array([image]), np.array([steering_angle])
 
         except Exception as e:

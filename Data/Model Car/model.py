@@ -124,7 +124,7 @@ image_shape = image1.shape
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
-model.add(Activation('ELU'))
+model.add(ELU())
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
 model.add(ELU())

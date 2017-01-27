@@ -33,13 +33,13 @@ images = np.array([image1, image2, image3])
 
 # Settings
 csv_path = "driving_log.csv"
-use_center_images_only = True
-steering_angle = 0.1
+use_center_images_only = False
+steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 200
-epoch_no = 2
+samples_per_epoch = 100
+epoch_no = 1
 
 # Modify image path
 # Image path is with respect to full file path
@@ -145,7 +145,9 @@ model.add(Dense(1, activation='tanh'))
 
 adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])
-history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle, center_images_only=use_center_images_only),
+history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle,
+                                             center_images_only=use_center_images_only,
+                                             image_path="./IMG"),
                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
 
 # model.json is the file that contains the model specifications

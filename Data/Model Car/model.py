@@ -257,7 +257,7 @@ model.add(Activation('relu'))
 
 model.add(Dense(10))
 # model.add(ELU())
-model.add(Activation('tanh'))
+model.add(Activation('relu'))
 model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)

@@ -1,0 +1,5 @@
+
+Positive Propostion: 0.40309936579574984
+Negative Propostion: 0.5969006342042501
+Center Proposition: 0.2836700426724276
+Positive Images: 37691

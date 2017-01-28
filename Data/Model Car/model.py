@@ -37,12 +37,12 @@ images = np.array([image1, image2, image3])
 
 # Settings
 csv_path = "driving_log.csv"
-use_center_images_only = True
+use_center_images_only = False
 steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 40000
+samples_per_epoch = 30000
 epoch_no = 1
 
 # Modify image path
@@ -53,6 +53,12 @@ def modify_image_path(recorded_path, image_path):
         return recorded_path
     else:
         return str(image_path) + "/" + str(os.path.split(recorded_path)[1])
+
+def get_adjusted_steering_angle(steering_angle):
+    if steering_angle < 0:
+        return max(-1.0, steering_angle)
+    else:
+        return min(1.0, steering_angle)
 
 # Min-Max Scaling
 def normalize(image_data):
@@ -88,39 +94,50 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
             data = data.split(",")
             steering_angle = float(data[3])
 
-            # Image, we would be doing a probability
-            # We wouldn't want to use too much front driving - more concerned on curves
-            # Mainly use the centre images - 50% chance
-            if random() > 0.5 or center_images_only:
-                image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
-                # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
-            elif random() > 0.5:
-                # Reads the right camera
-                image = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
-                steering_angle = min(1.0, steering_angle - steering_adj)
-                # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+            if center_images_only:
+                # Image, we would be doing a probability
+                # We wouldn't want to use too much front driving - more concerned on curves
+                # Mainly use the centre images - 50% chance
+                if random() > 0.5 or center_images_only:
+                    image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
+                elif random() > 0.5:
+                    # Reads the right camera
+                    image = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
+                    steering_angle = min(1.0, steering_angle - steering_adj)
+                else:
+                    # Reads the left camera
+                    image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
+                    steering_angle = min(1.0, steering_angle + steering_adj)
+
+                # Further image manipulations here
+
+                # Image normalization
+                image = normalize(image)
+
+                # TODO: Move image up or down to simulate slope
+                # TODO: Darken or lighten the image
+                # TODO: Cast shadow on image
+
+                # Image resizing
+                cv2.resize(image, (image.shape[0], image.shape[0]))
+
+                yield np.array([image]), np.array([steering_angle])
+
             else:
-                # Reads the left camera
-                image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
-                steering_angle = min(1.0, steering_angle + steering_adj)
-                # print "Using " + data[1] + " steering_angle: " + str(steering_angle)
+                image_center = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
+                steering_angle_center = steering_angle
 
-            # Further image manipulations here
+                image_left = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
+                steering_angle_left = steering_angle + steering_adj
 
-            # Image normalization
-            image = normalize(image)
+                image_right = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
+                steering_angle_right = steering_angle - steering_adj
 
-            # TODO: Move image up or down to simulate slope
-            # TODO: Darken or lighten the image
-            # TODO: Cast shadow on image
-
-            # Image resizing
-            cv2.resize(image, (image.shape[0], image.shape[0]))
-
-            yield np.array([image]), np.array([steering_angle])
+                yield np.array([image_center, image_left, image_right]), \
+                      np.array([steering_angle_center, steering_angle_left, steering_angle_right])
 
         except Exception as e:
-            print(str(e))
+                    print(str(e))
 
     f.close()
 

@@ -102,7 +102,7 @@ def normalize(image_data):
 
 
 # Generator function
-def generate_image(self, csv_path, steering_adj, center_images_only, image_path = None):
+def generate_image(csv_path, steering_adj, center_images_only, image_path = None):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()

@@ -243,12 +243,18 @@ model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
 model.add(Flatten())
+
+model.add(Dense(1000))
+model.add(Activation('relu'))
+
 model.add(Dense(100))
 #model.add(ELU())
 model.add(Activation('relu'))
+
 model.add(Dense(50))
 # model.add(ELU())
 model.add(Activation('relu'))
+
 model.add(Dense(10))
 # model.add(ELU())
 model.add(Activation('tanh'))

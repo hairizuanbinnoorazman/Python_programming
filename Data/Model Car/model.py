@@ -237,8 +237,8 @@ model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))
 
-# model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-# model.add(Activation('relu'))
+model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
+model.add(Activation('relu'))
 
 model.add(Flatten())
 model.add(Dense(100))

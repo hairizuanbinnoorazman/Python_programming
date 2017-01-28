@@ -96,11 +96,15 @@ class image_generator:
         self.min_images = 1000
 
     def print_stats(self):
+        f = open('stats.txt', 'w')
         total_images = self.positive_images + self.negative_images
-        print("Positive Propostion: " + str(float(self.positive_images)/float(total_images)))
-        print("Negative Propostion: " + str(float(self.negative_images)/float(total_images)))
-        print("Center Proposition: " + str(float(self.centered_images)/float(total_images)))
-        print("Positive Images: " + str(self.positive_images))
+        f.write("\nPositive Propostion: " + str(float(self.positive_images) / float(total_images)))
+        f.write("\nNegative Propostion: " + str(float(self.negative_images) / float(total_images)))
+        f.write("\nCenter Proposition: " + str(float(self.centered_images) / float(total_images)))
+        f.write("\nPositive Images: " + str(self.positive_images))
+        f.close()
+
+
 
 
     def flip_decide(self, steering_angle):

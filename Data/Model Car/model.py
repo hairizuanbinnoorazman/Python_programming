@@ -39,12 +39,12 @@ images = np.array([image1, image2, image3])
 # Settings
 csv_path = "driving_log.csv"
 use_center_images_only = False
-steering_angle = 0.20
+steering_angle = 0.25
 
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 60000
-epoch_no = 3
+epoch_no = 2
 
 # Modify image path
 # Image path is with respect to full file path

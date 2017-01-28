@@ -42,7 +42,7 @@ steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 20000
+samples_per_epoch = 40000
 epoch_no = 1
 
 # Modify image path

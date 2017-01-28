@@ -41,7 +41,7 @@ steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 10000
+samples_per_epoch = 40000
 epoch_no = 1
 
 # Modify image path
@@ -150,7 +150,7 @@ model.add(Dense(50))
 model.add(Activation('relu'))
 model.add(Dense(10))
 # model.add(ELU())
-model.add(Activation('relu'))
+model.add(Activation('tanh'))
 model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)

@@ -43,7 +43,7 @@ steering_angle = 0.15
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 60000
-epoch_no = 10
+epoch_no = 5
 
 # Modify image path
 # Image path is with respect to full file path
@@ -198,7 +198,7 @@ model.add(Dense(100))
 model.add(Activation('relu'))
 model.add(Dense(50))
 # model.add(ELU())
-model.add(Activation('tanh'))
+model.add(Activation('relu'))
 model.add(Dense(10))
 # model.add(ELU())
 model.add(Activation('tanh'))

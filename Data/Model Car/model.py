@@ -61,8 +61,10 @@ def get_adjusted_steering_angle(steering_angle):
     else:
         return min(1.0, steering_angle)
 
-def random_flipper(image, steering_angle):
-    if choice([True, False]):
+def random_flipper(image, steering_angle, control = None):
+    if control is None:
+        control = choice([True, False])
+    if control:
         image = cv2.flip(image, 1) # Flip horizontally
         steering_angle = -steering_angle
         return image, steering_angle
@@ -82,105 +84,138 @@ def normalize(image_data):
     max = 255
     return a + ( ( (image_data - min)*(b - a) )/( max - min ) )
 
-# class image_generator:
-#     def __init__(self):
-#         self.positive_steering_angle_proportion = 0.4
-#         self.negative_steering_angle_proportion = 0.4
-#         self.centered_steering_angle_proportion = 0.2
-#         self.tolerence = 0.1
-#         self.positive_images = 0
-#         self.negative_images = 0
-#         self.centered_images = 0
-#
-#     def calculate_proportion(self, steering_angle):
-#         total_image = self.positive_images + self.negative_images + self.centered_images
-#         if steering_angle < 0:
-#             negative_prop = (self.negative_images + 1)/total_image
-#             if negative_prop < (self.positive_steering_angle_proportion + self.tolerence):
-#
-#
-#     # Takes in a array
-#     def use_image(self, steering_angles, steering_adj, center_images_only):
-#         # Function only starts working after 1000 images
-#         total_images = self.positive_images + self.negative_images + self.centered_images
-#         if total_images > 1000:
-#             if center_images_only:
-#
-#         else:
-#             return True
+class image_generator:
+    def __init__(self):
+        self.positive_steering_angle_proportion = 0.3
+        self.negative_steering_angle_proportion = 0.3
+        self.centered_steering_angle_proportion = 0.3
+        self.tolerence = 0.1
+        self.positive_images = 0
+        self.negative_images = 0
+        self.centered_images = 0
+        self.min_images = 1000
+
+    def print_stats(self):
+        total_images = self.positive_images + self.negative_images
+        print("Positive Propostion: " + str(float(self.positive_images)/float(total_images)))
+        print("Negative Propostion: " + str(float(self.negative_images)/float(total_images)))
+        print("Center Proposition: " + str(float(self.centered_images)/float(total_images)))
 
 
-# Generator function
-def generate_image(csv_path, steering_adj, center_images_only, image_path = None):
-    # Get the file size
-    f = open(csv_path)
-    master_data = f.readlines()
-    no_of_records = len(master_data)
+    def flip_decide(self, steering_angle):
+        # False - Don't need to flip
+        # True - please flip it
+        total_image = self.positive_images + self.negative_images + self.centered_images
+        if total_image == 0:
+            total_image = 1
+        negative_prop = self.negative_images/float(total_image)
+        positive_prop = self.positive_images/float(total_image)
 
-    while True:
-        try:
-            # Generate a random line to be read
-            line_no = randint(0, no_of_records)
+        print(negative_prop)
+        print(positive_prop)
 
-            # Read line of data
-            data = master_data[line_no-1]
+        if total_image < self.min_images:
+            return False
 
-            # Meanings of numerical fields in data
-            # Steering, throttle, brake, speed
-            # We would only be using steering - column 4 (0 indexed)
-            data = data.split(",")
-            steering_angle = float(data[3])
-
-            if center_images_only:
-                # Image, we would be doing a probability
-                # We wouldn't want to use too much front driving - more concerned on curves
-                # Mainly use the centre images - 50% chance
-                if random() > 0.5 or center_images_only:
-                    image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
-                elif random() > 0.5:
-                    # Reads the right camera
-                    image = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
-                    steering_angle = min(1.0, steering_angle - steering_adj)
-                else:
-                    # Reads the left camera
-                    image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
-                    steering_angle = min(1.0, steering_angle + steering_adj)
-
-                # Further image manipulations here
-
-                # Image normalization
-                image = normalize(image)
-
-                # TODO: Move image up or down to simulate slope
-                # TODO: Darken or lighten the image
-                # TODO: Cast shadow on image
-
-                # Image resizing
-                cv2.resize(image, (image.shape[0], image.shape[0]))
-
-                yield np.array([image]), np.array([steering_angle])
-
+        if steering_angle < 0.0:
+            if negative_prop < (self.negative_steering_angle_proportion + self.tolerence):
+                return True
             else:
+                return False
+        else:
+            if positive_prop > (self.positive_steering_angle_proportion + self.tolerence):
+                return True
+            else:
+                return False
 
-                image_center = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
-                steering_angle_center = steering_angle
-                image_center, steering_angle_center = random_flipper(image_center, steering_angle_center)
+    def register_angle(self, steering_angle):
+        if steering_angle < 0.0:
+            self.negative_images = self.negative_images + 1
+        elif steering_angle > 0.0:
+            self.positive_images = self.positive_images + 1
+        else:
+            self.centered_images = self.centered_images + 1
 
-                image_left = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
-                steering_angle_left = steering_angle + steering_adj
-                image_left, steering_angle_left = random_flipper(image_left, steering_angle_left)
 
-                image_right = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
-                steering_angle_right = steering_angle - steering_adj
-                image_right, steering_angle_right = random_flipper(image_right, steering_angle_right)
+    # Generator function
+    def generate_image(self, csv_path, steering_adj, center_images_only, image_path = None):
+        # Get the file size
+        f = open(csv_path)
+        master_data = f.readlines()
+        no_of_records = len(master_data)
 
-                yield np.array([image_center, image_left, image_right]), \
-                      np.array([steering_angle_center, steering_angle_left, steering_angle_right])
+        while True:
+            try:
+                # Generate a random line to be read
+                line_no = randint(0, no_of_records)
 
-        except Exception as e:
-                    print(str(e))
+                # Read line of data
+                data = master_data[line_no-1]
 
-    f.close()
+                # Meanings of numerical fields in data
+                # Steering, throttle, brake, speed
+                # We would only be using steering - column 4 (0 indexed)
+                data = data.split(",")
+                steering_angle = float(data[3])
+
+                if center_images_only:
+                    # Image, we would be doing a probability
+                    # We wouldn't want to use too much front driving - more concerned on curves
+                    # Mainly use the centre images - 50% chance
+                    if random() > 0.5 or center_images_only:
+                        image = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
+                    elif random() > 0.5:
+                        # Reads the right camera
+                        image = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
+                        steering_angle = min(1.0, steering_angle - steering_adj)
+                    else:
+                        # Reads the left camera
+                        image = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
+                        steering_angle = min(1.0, steering_angle + steering_adj)
+
+                    # Further image manipulations here
+
+                    # Image normalization
+                    image = normalize(image)
+
+                    # TODO: Move image up or down to simulate slope
+                    # TODO: Darken or lighten the image
+                    # TODO: Cast shadow on image
+
+                    # Image resizing
+                    cv2.resize(image, (image.shape[0], image.shape[0]))
+
+                    yield np.array([image]), np.array([steering_angle])
+
+                else:
+                    # Center image manipulation
+                    image_center = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
+                    steering_angle_center = steering_angle
+                    image_center, steering_angle_center = random_flipper(image_center, steering_angle_center,
+                                                                         self.flip_decide(steering_angle_center))
+                    self.register_angle(steering_angle_center)
+
+                    # Left image manipulation
+                    image_left = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
+                    steering_angle_left = steering_angle + steering_adj
+                    image_left, steering_angle_left = random_flipper(image_left, steering_angle_left,
+                                                                     self.flip_decide(steering_angle_left))
+                    self.register_angle(steering_angle_left)
+
+                    # Right image manipulation
+                    image_right = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
+                    steering_angle_right = steering_angle - steering_adj
+                    image_right, steering_angle_right = random_flipper(image_right, steering_angle_right,
+                                                                       self.flip_decide(steering_angle_right))
+                    self.register_angle(steering_angle_right)
+
+                    yield np.array([image_center, image_left, image_right]), \
+                          np.array([steering_angle_center, steering_angle_left, steering_angle_right])
+
+            except Exception as e:
+                        print(str(e))
+
+        f.close()
 
 
 # Getting image shape
@@ -219,10 +254,14 @@ model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)
 model.compile(adam, "mse", ['accuracy'])
-history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle,
+generator = image_generator()
+
+history = model.fit_generator(generator.generate_image("driving_log.csv", steering_adj=steering_angle,
                                              center_images_only=use_center_images_only,
                                              image_path="./IMG"),
                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
+
+generator.print_stats()
 
 # model.json is the file that contains the model specifications
 json_string = model.to_json()

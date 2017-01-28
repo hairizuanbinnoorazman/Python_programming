@@ -100,6 +100,7 @@ class image_generator:
         print("Positive Propostion: " + str(float(self.positive_images)/float(total_images)))
         print("Negative Propostion: " + str(float(self.negative_images)/float(total_images)))
         print("Center Proposition: " + str(float(self.centered_images)/float(total_images)))
+        print("Positive Images: " + str(self.positive_images))
 
 
     def flip_decide(self, steering_angle):
@@ -261,8 +262,6 @@ history = model.fit_generator(generator.generate_image("driving_log.csv", steeri
                                              image_path="./IMG"),
                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
 
-generator.print_stats()
-
 # model.json is the file that contains the model specifications
 json_string = model.to_json()
 f = open('model.json', 'w')
@@ -271,3 +270,5 @@ f.close()
 
 # model.h5 is the file that contains the weights of the model specified in model.json
 model.save_weights("model.h5")
+
+generator.print_stats()

@@ -247,6 +247,10 @@ model.add(Flatten())
 model.add(Dense(1000))
 model.add(Activation('relu'))
 
+model.add(Dense(500))
+#model.add(ELU())
+model.add(Activation('relu'))
+
 model.add(Dense(100))
 #model.add(ELU())
 model.add(Activation('relu'))

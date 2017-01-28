@@ -8,6 +8,7 @@
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten
 from keras.layers.convolutional import Convolution2D
+from keras.layers.normalization import BatchNormalization
 from keras.optimizers import Adam
 from keras.regularizers import l2
 from keras.layers import ELU
@@ -41,7 +42,7 @@ steering_angle = 0.15
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 40000
+samples_per_epoch = 20000
 epoch_no = 1
 
 # Modify image path
@@ -150,6 +151,7 @@ model.add(Dense(50))
 model.add(Activation('relu'))
 model.add(Dense(10))
 # model.add(ELU())
+model.add(BatchNormalization())
 model.add(Activation('tanh'))
 model.add(Dense(1))
 

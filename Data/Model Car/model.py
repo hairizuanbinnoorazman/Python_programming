@@ -43,7 +43,7 @@ steering_angle = 0.15
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 30000
-epoch_no = 1
+epoch_no = 3
 
 # Modify image path
 # Image path is with respect to full file path
@@ -73,8 +73,36 @@ def normalize(image_data):
     max = 255
     return a + ( ( (image_data - min)*(b - a) )/( max - min ) )
 
+# class image_generator:
+#     def __init__(self):
+#         self.positive_steering_angle_proportion = 0.4
+#         self.negative_steering_angle_proportion = 0.4
+#         self.centered_steering_angle_proportion = 0.2
+#         self.tolerence = 0.1
+#         self.positive_images = 0
+#         self.negative_images = 0
+#         self.centered_images = 0
+#
+#     def calculate_proportion(self, steering_angle):
+#         total_image = self.positive_images + self.negative_images + self.centered_images
+#         if steering_angle < 0:
+#             negative_prop = (self.negative_images + 1)/total_image
+#             if negative_prop < (self.positive_steering_angle_proportion + self.tolerence):
+#
+#
+#     # Takes in a array
+#     def use_image(self, steering_angles, steering_adj, center_images_only):
+#         # Function only starts working after 1000 images
+#         total_images = self.positive_images + self.negative_images + self.centered_images
+#         if total_images > 1000:
+#             if center_images_only:
+#
+#         else:
+#             return True
+
+
 # Generator function
-def generate_image(csv_path, steering_adj, center_images_only, image_path = None):
+def generate_image(self, csv_path, steering_adj, center_images_only, image_path = None):
     # Get the file size
     f = open(csv_path)
     master_data = f.readlines()

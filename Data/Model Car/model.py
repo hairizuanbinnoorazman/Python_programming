@@ -219,7 +219,7 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
 
 
 # Getting image shape
-image_shape = (image1.shape[0], image1.shape[0], 3)
+image_shape = (None, image1.shape[0], image1.shape[0], 3)
 
 
 model = Sequential()

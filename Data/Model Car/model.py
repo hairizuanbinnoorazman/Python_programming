@@ -23,6 +23,7 @@ import matplotlib.image as mpimg
 # Import random to determine a random line of record to read
 from random import randint
 from random import random
+from random import choice
 
 import os
 
@@ -43,7 +44,7 @@ steering_angle = 0.15
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 60000
-epoch_no = 5
+epoch_no = 2
 
 # Modify image path
 # Image path is with respect to full file path
@@ -59,6 +60,14 @@ def get_adjusted_steering_angle(steering_angle):
         return max(-1.0, steering_angle)
     else:
         return min(1.0, steering_angle)
+
+def random_flipper(image, steering_angle):
+    if choice([True, False]):
+        image = cv2.flip(image, 1) # Flip horizontally
+        steering_angle = -steering_angle
+        return image, steering_angle
+    else:
+        return image, steering_angle
 
 # Min-Max Scaling
 def normalize(image_data):
@@ -152,14 +161,18 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
                 yield np.array([image]), np.array([steering_angle])
 
             else:
+
                 image_center = mpimg.imread(modify_image_path(str.strip(data[0]), image_path))
                 steering_angle_center = steering_angle
+                image_center, steering_angle_center = random_flipper(image_center, steering_angle_center)
 
                 image_left = mpimg.imread(modify_image_path(str.strip(data[1]), image_path))
                 steering_angle_left = steering_angle + steering_adj
+                image_left, steering_angle_left = random_flipper(image_left, steering_angle_left)
 
                 image_right = mpimg.imread(modify_image_path(str.strip(data[2]), image_path))
                 steering_angle_right = steering_angle - steering_adj
+                image_right, steering_angle_right = random_flipper(image_right, steering_angle_right)
 
                 yield np.array([image_center, image_left, image_right]), \
                       np.array([steering_angle_center, steering_angle_left, steering_angle_right])

@@ -6,7 +6,7 @@
 
 # Import the Keras library
 from keras.models import Sequential
-from keras.layers.core import Dense, Activation, Flatten
+from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.normalization import BatchNormalization
 from keras.optimizers import Adam
@@ -177,9 +177,11 @@ model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
 model.add(Activation('relu'))
+model.add(Dropout(0.5))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
 model.add(Activation('relu'))
+model.add(Dropout(0.5))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
 model.add(Activation('relu'))

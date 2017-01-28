@@ -43,8 +43,8 @@ steering_angle = 0.25
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 30000
-epoch_no = 4
+samples_per_epoch = 60000
+epoch_no = 2
 
 # Modify image path
 # Image path is with respect to full file path
@@ -226,38 +226,36 @@ image_shape = image1.shape
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
-model.add(Activation('relu'))
+model.add(ELU())
 model.add(Dropout(0.5))
 
 model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 model.add(Dropout(0.5))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Flatten())
 
 model.add(Dense(1000))
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Dense(100))
-#model.add(ELU())
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Dense(50))
-# model.add(ELU())
-model.add(Activation('relu'))
+model.add(ELU())
 
 model.add(Dense(10))
-# model.add(ELU())
-model.add(Activation('relu'))
+model.add(ELU())
+# model.add(Activation('relu'))
 model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)

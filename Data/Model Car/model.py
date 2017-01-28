@@ -205,9 +205,9 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
                 steering_angle_right = steering_angle - steering_adj
                 image_right, steering_angle_right = random_flipper(image_right, steering_angle_right)
 
-                image_center = cv2.resize(image_center, (image.shape[0], image.shape[0]))
-                image_left = cv2.resize(image_left, (image.shape[0], image.shape[0]))
-                image_right = cv2.resize(image_right, (image.shape[0], image.shape[0]))
+                image_center = cv2.resize(image_center, (image_center.shape[0], image_center.shape[0]))
+                image_left = cv2.resize(image_left, (image_left.shape[0], image_left.shape[0]))
+                image_right = cv2.resize(image_right, (image_right.shape[0], image_right.shape[0]))
 
                 yield np.array([image_center, image_left, image_right]), \
                       np.array([steering_angle_center, steering_angle_left, steering_angle_right])
@@ -268,5 +268,3 @@ f.close()
 
 # model.h5 is the file that contains the weights of the model specified in model.json
 model.save_weights("model.h5")
-
-generator.print_stats()

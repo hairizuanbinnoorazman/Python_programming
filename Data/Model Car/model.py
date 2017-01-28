@@ -1,8 +1,6 @@
 # This file is used to generate model.json and model.h5
 
-# TODO: Car keeps turning left - Need to find out the distribution of left vs right vs straight of 0 degrees
-# TODO: Car cannot recover if moved too far to the left or right - need more samples
-# TODO: Be able to manipulate the script and get the filename and not file path - Allow possibility to train on amazon gpu
+# TODO: Add regularizers to stop the car from zig zagging down the road
 
 # Import the Keras library
 from keras.models import Sequential
@@ -244,20 +242,19 @@ model.add(ELU())
 
 model.add(Flatten())
 
-model.add(Dense(1000))
+model.add(Dense(1000, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(500))
+model.add(Dense(500, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(100))
+model.add(Dense(100, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(50))
+model.add(Dense(50, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(10))
-model.add(BatchNormalization())
+model.add(Dense(10, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 # model.add(Activation('relu'))
 model.add(Dense(1))

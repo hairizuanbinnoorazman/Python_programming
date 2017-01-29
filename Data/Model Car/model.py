@@ -71,7 +71,7 @@ steering_angle = 0.25
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 30000
-epoch_no = 4
+epoch_no = 6
 
 
 def modify_image_path(recorded_path, image_path):
@@ -243,19 +243,19 @@ model.add(ELU())
 
 model.add(Flatten())
 
-model.add(Dense(1000))
+model.add(Dense(1000, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(500))
+model.add(Dense(500, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(100))
+model.add(Dense(100, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(50))
+model.add(Dense(50, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Dense(10))
+model.add(Dense(10, W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 # model.add(Activation('relu'))
 model.add(Dense(1))

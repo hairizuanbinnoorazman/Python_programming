@@ -70,8 +70,8 @@ steering_angle = 0.25
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 60000
-epoch_no = 3
+samples_per_epoch = 30000
+epoch_no = 4
 
 
 def modify_image_path(recorded_path, image_path):

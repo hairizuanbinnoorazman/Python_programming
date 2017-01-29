@@ -70,8 +70,8 @@ steering_angle = 0.20
 
 # Hyper parameters
 adam_learning_rate = 0.00001
-samples_per_epoch = 30000
-epoch_no = 4
+samples_per_epoch = 60000
+epoch_no = 2
 
 
 def modify_image_path(recorded_path, image_path):
@@ -225,43 +225,39 @@ image_shape = image1.shape
 model = Sequential()
 
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
-model.add(ELU())
+model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Convolution2D(36, 5, 5, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Convolution2D(36, 5, 5, subsample=(2,2)))
+model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Convolution2D(48, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Convolution2D(48, 3, 3, subsample=(2,2)))
+model.add(Activation('relu'))
 
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
+model.add(Activation('relu'))
 
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Convolution2D(64, 3, 3, subsample=(2,2)))
+model.add(Activation('relu'))
 
 model.add(Flatten())
 
-model.add(Dense(1000, W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Dense(1000))
+model.add(Activation('relu'))
 
-model.add(Dense(500, W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Dense(100))
+model.add(Activation('relu'))
 
-model.add(Dense(100, W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
+model.add(Dense(50))
+model.add(Activation('relu'))
 
-model.add(Dense(50, W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
-
-model.add(Dense(10, W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
-model.add(ELU())
-# model.add(Activation('relu'))
+model.add(Dense(10))
+# model.add(ELU())
+model.add(Activation('relu'))
 model.add(Dense(1))
 
 adam = Adam(lr=adam_learning_rate)
-#model.compile(adam, "mse", ['accuracy'])
 model.compile(adam, "mse")
 
 ############################################

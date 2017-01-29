@@ -10,6 +10,9 @@ images and treat them as though the car was positioned slightly left and slightl
 several blogposts and discussions mentioned a slight angle of 0.25 to the steering wheel but this was tested on the
 model. If we drove around at the center of the road and collected 10,000 images, we would have collected '30000' images that
 can be used for training.
+- Instead of using keyboard input, we would use a joystick input. (In my case, I utilized a PS4 controller connected to
+my computer)
+- The dataset I collected is combined with the dataset that someone provided in the slack channel (More data is always better?)
 
 ## What kind of model infrastruture is implemented here?
 

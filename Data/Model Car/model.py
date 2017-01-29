@@ -228,17 +228,17 @@ model.add(Convolution2D(24, 5, 5, subsample=(2,2), input_shape=image_shape))
 model.add(ELU())
 model.add(Dropout(0.5))
 
-model.add(Convolution2D(36, 5, 5, subsample=(2,2), W_regularizer=l2(0.01)))
+model.add(Convolution2D(36, 5, 5, subsample=(2,2), W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 model.add(Dropout(0.5))
 
-model.add(Convolution2D(48, 3, 3, subsample=(2,2), W_regularizer=l2(0.01)))
+model.add(Convolution2D(48, 3, 3, subsample=(2,2), W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.01)))
+model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.01)))
+model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.01), b_regularizer=l2(0.01)))
 model.add(ELU())
 
 model.add(Flatten())

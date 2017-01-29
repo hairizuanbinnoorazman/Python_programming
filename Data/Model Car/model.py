@@ -234,9 +234,11 @@ model.add(Dropout(0.5))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())
+model.add(Dropout(0.5))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())
+model.add(Dropout(0.5))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())

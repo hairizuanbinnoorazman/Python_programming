@@ -66,12 +66,12 @@ images = np.array([image1, image2, image3])
 # Settings
 csv_path = "driving_log.csv"
 use_center_images_only = False
-steering_angle = 0.25
+steering_angle = 0.20
 
 # Hyper parameters
 adam_learning_rate = 0.00001
 samples_per_epoch = 30000
-epoch_no = 6
+epoch_no = 4
 
 
 def modify_image_path(recorded_path, image_path):
@@ -234,11 +234,9 @@ model.add(Dropout(0.5))
 
 model.add(Convolution2D(48, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())
-model.add(Dropout(0.5))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())
-model.add(Dropout(0.5))
 
 model.add(Convolution2D(64, 3, 3, subsample=(2,2), W_regularizer=l2(0.001), b_regularizer=l2(0.001)))
 model.add(ELU())

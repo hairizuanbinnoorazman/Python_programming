@@ -29,26 +29,26 @@ import csv
 ############################################
 
 # # This part is disabled after writing the first version of the file
-# from sklearn.cross_validation import train_test_split
-#
-# data = np.loadtxt('driving_log_full.csv', dtype=str, usecols=(0, 1, 2, 3))
-# X_input_loc = data[:, (0, 1, 2)]
-# y_output_angle = data[:, (3)]
-# X_train, X_validation, y_train, y_validation = train_test_split(X_input_loc, y_output_angle, test_size=0.3, random_state=42)
-#
-# training_data = np.column_stack((X_train, X_validation))
-# testing_data = np.column_stack((y_train, y_validation))
-#
-# training_data.tolist()
-# testing_data.tolist()
-#
-# datafile = open('driving_log.csv', 'w')
-# writer = csv.writer(datafile)
-# writer.writerows(training_data)
-#
-# datafile_test = open('driving_log_test.csv', 'w')
-# writer_test = csv.writer(datafile_test)
-# writer_test.writerows(testing_data)
+from sklearn.cross_validation import train_test_split
+
+data = np.loadtxt('driving_log_full.csv', dtype=str, usecols=(0, 1, 2, 3))
+X_input_loc = data[:, (0, 1, 2)]
+y_output_angle = data[:, (3)]
+X_train, X_validation, y_train, y_validation = train_test_split(X_input_loc, y_output_angle, test_size=0.3, random_state=42)
+
+training_data = np.column_stack((X_train, X_validation))
+testing_data = np.column_stack((y_train, y_validation))
+
+training_data.tolist()
+testing_data.tolist()
+
+datafile = open('driving_log.csv', 'w')
+writer = csv.writer(datafile)
+writer.writerows(training_data)
+
+datafile_test = open('driving_log_test.csv', 'w')
+writer_test = csv.writer(datafile_test)
+writer_test.writerows(testing_data)
 
 ############################################
 # Training the model
@@ -132,7 +132,7 @@ def normalize(image_data):
     return a + ( ( (image_data - min)*(b - a) )/( max - min ) )
 
 
-def generate_image(csv_path, steering_adj, center_images_only, image_path = None):
+def generate_image(master_data, steering_adj, center_images_only, image_path = None):
     """
     Image Generator function
     :param csv_path: The location of the image data
@@ -143,8 +143,8 @@ def generate_image(csv_path, steering_adj, center_images_only, image_path = None
     """
 
     # Get the file size
-    f = open(csv_path)
-    master_data = f.readlines()
+    # f = open(csv_path)
+    # master_data = f.readlines()
     no_of_records = len(master_data)
 
     while True:
@@ -264,7 +264,14 @@ model.compile(adam, "mse")
 # Run function to train model
 ############################################
 
-history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle,
+# Script altered to utilize the training data that is obtained from the top of this script
+#
+# history = model.fit_generator(generate_image("driving_log.csv", steering_adj=steering_angle,
+#                                              center_images_only=use_center_images_only,
+#                                              image_path="./IMG"),
+#                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
+
+history = model.fit_generator(generate_image(training_data, steering_adj=steering_angle,
                                              center_images_only=use_center_images_only,
                                              image_path="./IMG"),
                               samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)

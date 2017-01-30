@@ -274,7 +274,10 @@ model.compile(adam, "mse")
 history = model.fit_generator(generate_image(training_data, steering_adj=steering_angle,
                                              center_images_only=use_center_images_only,
                                              image_path="./IMG"),
-                              samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no)
+                              samples_per_epoch=samples_per_epoch, nb_epoch=epoch_no,
+                              validation_data=generate_image(testing_data, steering_adj=steering_angle,
+                                             center_images_only=use_center_images_only,
+                                             image_path="./IMG"))
 
 ############################################
 # Write the output

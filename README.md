@@ -9,3 +9,7 @@ This repo is to store some usable python snippets.
 | API | Contains scripts that deal with APIs
 | Data | Contains scripts that deal with manipulating and managing data |
 | Solutions | Contains pre-packaged python based solutions that is deployable to the server immediately |
+
+# Tools
+
+In order to improve readability, we would use jupyter notebooks to represent the code and information

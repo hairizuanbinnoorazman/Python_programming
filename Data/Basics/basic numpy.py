@@ -13,3 +13,12 @@ def firstn(n):
     while num < n:
         yield [num, num+1, num+2]
         num = num + 1
+
+
+class test:
+    def __init__(self):
+        self.lol = 'miao'
+        self.miaozz = self.miaoza('ac')
+
+    def miaoza(self, lol):
+        return lol

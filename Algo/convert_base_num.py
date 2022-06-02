@@ -8,6 +8,9 @@
 #
 # Convert 15 to base 3
 # 1 2 10 11 12 20 21 22 100 101 102 110 111 112 120
+#
+# Convert 5 to base 2
+# 1 10 11 100 101
 
 def convert_base(convert_to_base: int, num: int):
     is_negative = False
@@ -32,3 +35,4 @@ def convert_base(convert_to_base: int, num: int):
 
 print(convert_base(5, 7))
 print(convert_base(3, 14))
+print(convert_base(2, 5))

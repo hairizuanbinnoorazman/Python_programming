@@ -20,7 +20,7 @@
         </tr>
         {% for submission in submissions %}
         <tr>
-            <td>{{ submission[0] }}</td>
+            <td><a href="/view-submission/{{ submission[0] }}">{{ submission[0] }}</a></td>
             <td>{{ submission[1] }}</td>
             <td>{{ submission[2] }}</td>
             <td>{{ submission[3] }}</td>

@@ -18,7 +18,6 @@ def list_submissions():
     cur = con.cursor()
     vals = cur.execute("SELECT * from job")
     items = vals.fetchall()
-    print(items)
     return render_template("submission_list.html", submissions=items)
 
 @app.route("/submissions", methods=['POST'])
@@ -47,7 +46,24 @@ def create_submission():
     cur = con.cursor()
     cur.execute("INSERT INTO job VALUES (?, ?, ?, ?)",  (key,status,current_time,current_time))
     con.commit()
-    return "<p>Submission</p>" 
+    return {} 
+
+
+@app.route("/view-submission/<id>")
+def view_submission(id):
+    script_path = os.path.join(os.getcwd(), id)
+    code_path = os.path.join(script_path, "main.py")
+    log_path = os.path.join(script_path, "output.log")
+    raw_code = ''
+    raw_log = ''
+    with open(code_path, 'r') as f:
+        raw_code = f.read()
+
+    with open(log_path, 'r') as f:
+        raw_log = f.read()
+
+    return render_template("single_submission.html", id=id, code=raw_code, log=raw_log)
+
 
 @app.route("/")
 def hello_world():

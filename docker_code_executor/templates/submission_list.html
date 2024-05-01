@@ -1,0 +1,30 @@
+<html>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</html>
+<body>
+    <h1>List of submissions</h1>
+
+    <p>List of submissions and all of its details</p>
+
+    <table>
+        <tr>
+            <th>Job ID</th>
+            <th>Status</th>
+            <th>Date Created</th>
+            <th>Date Modified</th>
+        </tr>
+        {% for submission in submissions %}
+        <tr>
+            <td>{{ submission[0] }}</td>
+            <td>{{ submission[1] }}</td>
+            <td>{{ submission[2] }}</td>
+            <td>{{ submission[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>

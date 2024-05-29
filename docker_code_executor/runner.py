@@ -31,15 +31,27 @@ def update_job(id: str, status: str):
     cur.execute("UPDATE job SET status = ?, date_modified = ? WHERE id = ?", (status, current_time, id))
     con.commit()
 
+def get_language_mapping(runtime: str, folder_name: str) -> Union[str, None]:
+    just_lang = runtime.split(":")[0]
+    language_mapping = {
+        "python": f"python /{folder_name}/main.py",
+        "golang": f"go run /{folder_name}/main.go"
+    }
+
+    return language_mapping.get(just_lang)
+
+    
+
 def run_script(image_name: str, folder_name: str):
     print("begin pull")
     client.images.pull(image_name)     
     script_path = os.path.join(os.getcwd(), folder_name)
     log_path = os.path.join(script_path, "output.log")
     print(f"start application :: {script_path} :: {image_name}")
+
     hh = client.containers.run(
         image=image_name,
-        command=f"python /{folder_name}/main.py", 
+        command=get_language_mapping(image_name, folder_name), 
         detach=True,
         read_only=False,
         stdout=True,

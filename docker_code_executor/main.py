@@ -15,14 +15,15 @@ def get_db():
 def get_job(id: str) -> dict:
     con = get_db()
     cur = con.cursor()
-    vals = cur.execute("SELECT * from job WHERE id = ?", id)
+    print(id)
+    vals = cur.execute("SELECT * from job WHERE id = ?", [id])
     items = vals.fetchone()
     if items is None:
         return ''
     return {
         "id": items[0],
-        "status": items[1], 
-        "runtime": items[2],
+        "runtime": items[1],
+        "status": items[2], 
     }
  
 @app.route("/submissions", methods=["GET"])
@@ -51,7 +52,7 @@ def create_submission():
     os.mkdir(script_path)
 
     # write out code file
-    code_path = os.path.join(script_path, "main.py")
+    code_path = get_code_path(script_path, runtime)
     print(f"Saving code {code_path}")
     with open(code_path, "wb+") as f:
         f.write(decoded_code)
@@ -62,16 +63,26 @@ def create_submission():
     con.commit()
     return {} 
 
+def get_code_path(script_path: str, runtime: str) -> str:
+    code_path = ""
+    short_lang = runtime.split(":")[0]
+    if short_lang == "python":
+        code_path = os.path.join(script_path, "main.py")
+    elif short_lang == "golang": 
+        code_path = os.path.join(script_path, "main.go")
+
+    return code_path
+
 
 @app.route("/view-submission/<id>")
 def view_submission(id):
     script_path = os.path.join(os.getcwd(), id)
-    code_path = os.path.join(script_path, "main.py")
     log_path = os.path.join(script_path, "output.log")
     raw_code = ''
     raw_log = ''
 
     job_info = get_job(id)
+    code_path = get_code_path(script_path, job_info["runtime"])
 
     with open(code_path, 'r') as f:
         raw_code = f.read()
@@ -79,7 +90,10 @@ def view_submission(id):
     with open(log_path, 'r') as f:
         raw_log = f.read()
 
-    return render_template("single_submission.html", id=id, code=raw_code, log=raw_log, runtime=job_info["runtime"])
+    raw_code_split = raw_code.split('\n')
+    raw_log_split = raw_log.split('\n')
+
+    return render_template("single_submission.html", id=id, multiline_code=raw_code_split, multiline_log=raw_log_split, runtime=job_info["runtime"])
 
 
 @app.route("/")

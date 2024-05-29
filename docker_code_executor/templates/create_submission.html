@@ -12,6 +12,12 @@
         <h1>Code submission page</h1>
         <form id="form" action="" method="post">
             <div class="form-group row">
+                <label for="runtime">Code:</label>
+                <select name="runtime" id="runtime">
+                    <option value="python:3.12">python:3.12</option>
+                </select>
+            </div>
+            <div class="form-group row">
                 <label for="code">Code:</label>
                 <textarea style="height:500px;" name="code" id="code"></textarea>
             </div>
@@ -31,7 +37,7 @@
                 type : "POST", // type of action POST || GET
                 dataType : 'json', // data type
                 contentType: "application/json",
-                data : JSON.stringify({"code":btoa($("#code").val())}), // post data || get data
+                data : JSON.stringify({"code":btoa($("#code").val()),"runtime":$("#runtime").val()}), // post data || get data
                 success : function(result) {
                     // you can see the result from the console
                     // tab of the developer tools

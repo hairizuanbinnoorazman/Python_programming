@@ -2,6 +2,7 @@ import os
 import sqlite3
 import time
 from datetime import datetime, timedelta
+from typing import Union
 
 import docker
 
@@ -11,16 +12,17 @@ def get_db():
     con = sqlite3.connect("example.db")
     return con 
  
-def get_job() -> str:
+def get_job() -> Union[dict, None]:
     con = get_db()
     cur = con.cursor()
-    vals = cur.execute("SELECT * from job WHERE status = 'submitted'")
-    vals.arraysize
+    vals = cur.execute('SELECT * from job where status = "submitted"')
     items = vals.fetchone()
     if items is None:
-        return ''
-    id = items[0]
-    return id
+        return None
+    return {
+        "id": items[0],
+        "runtime": items[1],
+    }
 
 def update_job(id: str, status: str):
     con = get_db()
@@ -76,15 +78,15 @@ def run_script(image_name: str, folder_name: str):
 
 while True:
     aa = get_job()
-    if aa == '':
+    if aa is None:
         print("no job so far")
         time.sleep(5)
         continue
 
-    print(f"update job {aa} as running")
-    update_job(aa, "running")
-    run_script("python:3.12", aa)
-    print(f"update job {aa} as complete")
-    update_job(aa, "complete")
+    print(f"update job {aa['id']} as running")
+    update_job(aa['id'], "running")
+    run_script(aa['runtime'], aa['id'])
+    print(f"update job {aa['id']} as complete")
+    update_job(aa['id'], "complete")
 
     time.sleep(5)

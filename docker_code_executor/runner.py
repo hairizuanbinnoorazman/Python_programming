@@ -56,6 +56,9 @@ def run_script(image_name: str, folder_name: str):
         read_only=False,
         stdout=True,
         stderr=True,
+        # Limit resources
+        pids_limit=10,
+        mem_limit='200m',
         cap_drop=["ALL"],
         volumes={f"{script_path}": {"bind": f"/{folder_name}", "mode": "ro"}}
     )

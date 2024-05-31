@@ -87,13 +87,16 @@ def view_submission(id):
     with open(code_path, 'r') as f:
         raw_code = f.read()
 
-    with open(log_path, 'r') as f:
-        raw_log = f.read()
+    if job_info["status"] == "completed":
+        with open(log_path, 'r') as f:
+            raw_log = f.read()
+    else:
+        raw_log = f"no log available - status of job: {job_info['status']}"
 
     raw_code_split = raw_code.split('\n')
     raw_log_split = raw_log.split('\n')
 
-    return render_template("single_submission.html", id=id, multiline_code=raw_code_split, multiline_log=raw_log_split, runtime=job_info["runtime"])
+    return render_template("single_submission.html", id=id, status=job_info["status"],  multiline_code=raw_code_split, multiline_log=raw_log_split, runtime=job_info["runtime"])
 
 
 @app.route("/")

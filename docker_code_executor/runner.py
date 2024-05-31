@@ -60,6 +60,7 @@ def run_script(image_name: str, folder_name: str):
         pids_limit=10,
         mem_limit='200m',
         cap_drop=["ALL"],
+        network_mode="none",
         volumes={f"{script_path}": {"bind": f"/{folder_name}", "mode": "ro"}}
     )
     print(f"Container running {hh.name} - {hh.short_id} - {hh.status}")

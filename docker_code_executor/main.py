@@ -87,7 +87,7 @@ def view_submission(id):
     with open(code_path, 'r') as f:
         raw_code = f.read()
 
-    if job_info["status"] == "completed":
+    if job_info["status"] == "complete":
         with open(log_path, 'r') as f:
             raw_log = f.read()
     else:

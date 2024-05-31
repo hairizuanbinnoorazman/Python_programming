@@ -101,8 +101,13 @@ while True:
 
     print(f"update job {aa['id']} as running")
     update_job(aa['id'], "running")
-    run_script(aa['runtime'], aa['id'])
-    print(f"update job {aa['id']} as complete")
-    update_job(aa['id'], "complete")
-
+    try:
+        run_script(aa['runtime'], aa['id'])
+        print(f"update job {aa['id']} as complete")
+        update_job(aa['id'], "complete")
+    except Exception as e:
+        print(f"error happened: {e}")
+        print(f"update job {aa['id']} as failed")
+        update_job(aa['id'], "failed")
+    
     time.sleep(5)
